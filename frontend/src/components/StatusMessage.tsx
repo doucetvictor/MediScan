@@ -11,7 +11,7 @@ export function StatusMessage({ status, error }: StatusMessageProps) {
       {status && (
         <div className='status success'>
           <span className='status-icon'>✓</span>
-          <span className='status-text'>{status}</span>
+          <div className='status-text whitespace-pre-line'>{status}</div>
         </div>
       )}
       {error && (

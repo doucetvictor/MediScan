@@ -18,7 +18,14 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { FileText, FolderOpen, Check } from 'lucide-react';
+import {
+  FileText,
+  FolderOpen,
+  Check,
+  Building2,
+  Stethoscope,
+  User,
+} from 'lucide-react';
 import { laboratorySchema, type LaboratoryFormData } from '../schema';
 
 interface LaboratoryFormProps {
@@ -32,8 +39,24 @@ export function LaboratoryForm({ onSubmit, uploading }: LaboratoryFormProps) {
   const form = useForm<LaboratoryFormData>({
     resolver: zodResolver(laboratorySchema),
     defaultValues: {
-      patientEmail: '',
-      doctorEmail: '',
+      origin: {
+        id: '',
+        company_name: '',
+        email: '',
+        phone: '',
+      },
+      doctor: {
+        firstname: '',
+        lastname: '',
+        email: '',
+        phone: '',
+      },
+      patient: {
+        firstname: '',
+        lastname: '',
+        email: '',
+        phone: '',
+      },
       file: undefined,
     },
   });
@@ -50,43 +73,201 @@ export function LaboratoryForm({ onSubmit, uploading }: LaboratoryFormProps) {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
-            <FormField
-              control={form.control}
-              name='patientEmail'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Patient Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type='email'
-                      placeholder='patient@email.com'
-                      autoComplete='email'
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+              {/* Laboratory Section */}
+              <div className='space-y-5'>
+                <div className='flex items-center gap-2 mb-4 pb-2 border-b'>
+                  <Building2 size={18} className='text-primary' />
+                  <h4 className='text-lg font-semibold'>Laboratory</h4>
+                </div>
+                <FormField
+                  control={form.control}
+                  name='origin.company_name'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Laboratory Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder='Laboratory name' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='origin.id'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Origin ID</FormLabel>
+                      <FormControl>
+                        <Input placeholder='Laboratory ID' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='origin.phone'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone</FormLabel>
+                      <FormControl>
+                        <Input placeholder='+33...' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='origin.email'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          type='email'
+                          placeholder='laboratory@email.com'
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-            <FormField
-              control={form.control}
-              name='doctorEmail'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Doctor Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type='email'
-                      placeholder='doctor@clinic.com'
-                      autoComplete='email'
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              {/* Doctor Section */}
+              <div className='space-y-5'>
+                <div className='flex items-center gap-2 mb-4 pb-2 border-b'>
+                  <Stethoscope size={18} className='text-primary' />
+                  <h4 className='text-lg font-semibold'>Doctor</h4>
+                </div>
+                <FormField
+                  control={form.control}
+                  name='doctor.firstname'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>First Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder='First name' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='doctor.lastname'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Last Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder='Last name' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='doctor.email'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          type='email'
+                          placeholder='doctor@email.com'
+                          autoComplete='email'
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='doctor.phone'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone</FormLabel>
+                      <FormControl>
+                        <Input placeholder='+33...' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Patient Section */}
+              <div className='space-y-5'>
+                <div className='flex items-center gap-2 mb-4 pb-2 border-b'>
+                  <User size={18} className='text-primary' />
+                  <h4 className='text-lg font-semibold'>Patient</h4>
+                </div>
+                <FormField
+                  control={form.control}
+                  name='patient.firstname'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>First Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder='First name' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='patient.lastname'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Last Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder='Last name' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='patient.email'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          type='email'
+                          placeholder='patient@email.com'
+                          autoComplete='email'
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='patient.phone'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone</FormLabel>
+                      <FormControl>
+                        <Input placeholder='+33...' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
 
             <FormField
               control={form.control}

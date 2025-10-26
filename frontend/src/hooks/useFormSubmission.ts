@@ -45,26 +45,65 @@ export function useFormSubmission() {
     setError(null);
     setStatus(null);
 
+    // Prepare data according to Doctobuck API
+    const caseData = {
+      case_no: `CASE-${Date.now()}`,
+      origin: {
+        id: data.origin.id,
+        company_name: data.origin.company_name,
+        email: data.origin.email,
+        phone: data.origin.phone,
+      },
+      doctor: {
+        firstname: data.doctor.firstname,
+        lastname: data.doctor.lastname,
+        email: data.doctor.email,
+        phone: data.doctor.phone,
+      },
+      patient: {
+        firstname: data.patient.firstname,
+        lastname: data.patient.lastname,
+        email: data.patient.email,
+        phone: data.patient.phone,
+      },
+    };
+
     const formData = new FormData();
-    formData.append('type', 'laboratory');
-    formData.append('patientEmail', data.patientEmail);
-    formData.append('doctorEmail', data.doctorEmail);
     formData.append('file', data.file);
+    formData.append('data', JSON.stringify(caseData));
 
     try {
       setUploading(true);
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
+      const res = await fetch(
+        'https://doctobuckentrypoint-1062594341429.europe-west9.run.app',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
       if (!res.ok) {
         const text = await res.text();
         throw new Error(text || `Upload failed (${res.status})`);
       }
-      const json = await res
-        .json()
-        .catch(() => ({ message: 'Upload successful' }));
-      setStatus(json.message || 'Upload successful');
+      const json = await res.json();
+
+      // Format the response nicely
+      let successMessage = '✅ Upload successful!\n\n';
+      successMessage += `📋 Case ID: ${json.case_id}\n`;
+
+      if (json.inform_doctor?.success && json.inform_doctor?.target) {
+        successMessage += `✉️ Doctor notified: ${json.inform_doctor.target}\n`;
+      }
+      if (json.inform_patient?.success && json.inform_patient?.target) {
+        successMessage += `✉️ Patient notified: ${json.inform_patient.target}\n`;
+      }
+
+      if (json.ai_comments) {
+        const preview = json.ai_comments.substring(0, 200);
+        successMessage += `\n📝 AI Analysis Preview:\n${preview}...`;
+      }
+
+      setStatus(successMessage);
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);

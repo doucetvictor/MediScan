@@ -75,9 +75,8 @@ function App() {
         {/* Footer */}
         <footer className='notes text-center'>
           <small>
-            Files are sent to the backend endpoint POST /api/upload as
-            multipart/form-data for processing blood test results and medical
-            documents.
+            Files are sent to the Doctobuck endpoint for processing blood test
+            results and medical documents.
           </small>
         </footer>
       </div>
