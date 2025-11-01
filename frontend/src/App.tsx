@@ -3,6 +3,8 @@ import { ModeSelector } from './components/ModeSelector';
 import { PatientForm } from './components/PatientForm';
 import { LaboratoryForm } from './components/LaboratoryForm';
 import { StatusMessage } from './components/StatusMessage';
+import { SuccessScreen } from './components/SuccessScreen';
+import { PatientSuccessScreen } from './components/PatientSuccessScreen';
 import { useFormSubmission } from './hooks/useFormSubmission';
 import './App.css';
 
@@ -12,8 +14,16 @@ function App() {
   );
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const { status, error, uploading, onSubmitPatient, onSubmitLaboratory } =
-    useFormSubmission();
+  const {
+    status,
+    error,
+    uploading,
+    uploadResponse,
+    patientResponse,
+    onSubmitPatient,
+    onSubmitLaboratory,
+    resetStatus,
+  } = useFormSubmission();
 
   // Function to change tab with transition
   const handleTabChange = (newTab: 'patient' | 'laboratory') => {
@@ -42,6 +52,17 @@ function App() {
           </p>
         </div>
         <div className='w-full'>
+          {/* Status and Error Popup */}
+          {(!status || error) && (
+            <StatusMessage
+              status={status}
+              error={error}
+              onClose={() => {
+                if (resetStatus) resetStatus();
+              }}
+            />
+          )}
+
           <ModeSelector
             activeTab={activeTab}
             onTabChange={handleTabChange}
@@ -49,28 +70,55 @@ function App() {
           />
 
           <div className='form-wrapper'>
-            {activeTab === 'patient' && (
-              <div
-                className={`form-container ${isTransitioning ? 'exiting' : ''}`}
-              >
-                <PatientForm onSubmit={onSubmitPatient} uploading={uploading} />
-              </div>
-            )}
-
-            {activeTab === 'laboratory' && (
-              <div
-                className={`form-container ${isTransitioning ? 'exiting' : ''}`}
-              >
-                <LaboratoryForm
-                  onSubmit={onSubmitLaboratory}
-                  uploading={uploading}
+            {status && !error && activeTab === 'laboratory' ? (
+              <div className='form-container'>
+                <SuccessScreen
+                  uploadResponse={uploadResponse}
+                  onReset={() => {
+                    resetStatus?.();
+                  }}
                 />
               </div>
+            ) : status && !error && activeTab === 'patient' ? (
+              <div className='form-container'>
+                <PatientSuccessScreen
+                  response={patientResponse}
+                  onReset={() => {
+                    resetStatus?.();
+                  }}
+                />
+              </div>
+            ) : (
+              <>
+                {activeTab === 'patient' && (
+                  <div
+                    className={`form-container ${
+                      isTransitioning ? 'exiting' : ''
+                    }`}
+                  >
+                    <PatientForm
+                      onSubmit={onSubmitPatient}
+                      uploading={uploading}
+                    />
+                  </div>
+                )}
+
+                {activeTab === 'laboratory' && (
+                  <div
+                    className={`form-container ${
+                      isTransitioning ? 'exiting' : ''
+                    }`}
+                  >
+                    <LaboratoryForm
+                      onSubmit={onSubmitLaboratory}
+                      uploading={uploading}
+                    />
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
-
-        <StatusMessage status={status} error={error} />
 
         {/* Footer */}
         <footer className='notes text-center'>

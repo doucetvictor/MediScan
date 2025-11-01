@@ -1,15 +1,16 @@
 import * as z from 'zod';
 
-// Schema for patients - consultation code with user info
 export const patientSchema = z.object({
-  consultationCode: z.string().min(1, 'Consultation code is required'),
+  case_id: z.string().min(1, 'Case ID is required'),
+  user_id: z.string().min(1, 'User ID is required'),
+  password: z.string().min(1, 'Password is required'),
+  user_type: z.string().min(1, 'User type is required'),
 });
 
 // Schema for laboratories - according to Doctobuck API
 export const laboratorySchema = z.object({
   // Origin (Laboratory)
   origin: z.object({
-    id: z.string().min(1, 'Origin ID is required'),
     company_name: z.string().min(1, 'Company name is required'),
     email: z.string().email('Please enter a valid email address'),
     phone: z.string().min(1, 'Phone number is required'),
@@ -37,5 +38,5 @@ export const laboratorySchema = z.object({
     ),
 });
 
-export type PatientFormData = z.infer<typeof patientSchema>;
 export type LaboratoryFormData = z.infer<typeof laboratorySchema>;
+export type PatientFormData = z.infer<typeof patientSchema>;

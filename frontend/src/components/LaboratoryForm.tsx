@@ -25,6 +25,7 @@ import {
   Building2,
   Stethoscope,
   User,
+  Loader2,
 } from 'lucide-react';
 import { laboratorySchema, type LaboratoryFormData } from '../schema';
 
@@ -40,7 +41,6 @@ export function LaboratoryForm({ onSubmit, uploading }: LaboratoryFormProps) {
     resolver: zodResolver(laboratorySchema),
     defaultValues: {
       origin: {
-        id: '',
         company_name: '',
         email: '',
         phone: '',
@@ -62,12 +62,24 @@ export function LaboratoryForm({ onSubmit, uploading }: LaboratoryFormProps) {
   });
 
   return (
-    <Card className='upload-card'>
+    <Card className='upload-card relative'>
+      {uploading && (
+        <div className='absolute inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center rounded-lg'>
+          <div className='flex flex-col items-center gap-4'>
+            <Loader2 className='h-12 w-12 animate-spin text-primary' />
+            <div className='text-lg font-semibold'>Uploading document...</div>
+            <div className='text-sm text-muted-foreground'>
+              Please wait, this may take a few moments
+            </div>
+          </div>
+        </div>
+      )}
       <CardHeader>
         <CardTitle>Upload Medical Documents</CardTitle>
         <CardDescription>
-          Upload blood test results for a patient. The consultation code will be
-          sent to the patient and doctor emails.
+          Fill in all the information below and upload the PDF document. The
+          analysis will be processed and sent to the patient and doctor by
+          email.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -88,19 +100,6 @@ export function LaboratoryForm({ onSubmit, uploading }: LaboratoryFormProps) {
                       <FormLabel>Laboratory Name</FormLabel>
                       <FormControl>
                         <Input placeholder='Laboratory name' {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='origin.id'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Origin ID</FormLabel>
-                      <FormControl>
-                        <Input placeholder='Laboratory ID' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -286,6 +285,7 @@ export function LaboratoryForm({ onSubmit, uploading }: LaboratoryFormProps) {
                           onChange(file);
                         }}
                         className='file-input'
+                        disabled={uploading}
                       />
                       <div className='file-display'>
                         <div className='file-icon'>
@@ -328,7 +328,14 @@ export function LaboratoryForm({ onSubmit, uploading }: LaboratoryFormProps) {
             />
 
             <Button type='submit' className='w-full' disabled={uploading}>
-              {uploading ? 'Uploading...' : 'Upload Document'}
+              {uploading ? (
+                <>
+                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                  Uploading...
+                </>
+              ) : (
+                'Upload Document'
+              )}
             </Button>
           </form>
         </Form>

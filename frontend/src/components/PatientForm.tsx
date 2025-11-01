@@ -17,6 +17,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { patientSchema, type PatientFormData } from '../schema';
 
 interface PatientFormProps {
@@ -28,7 +35,10 @@ export function PatientForm({ onSubmit, uploading }: PatientFormProps) {
   const form = useForm<PatientFormData>({
     resolver: zodResolver(patientSchema),
     defaultValues: {
-      consultationCode: '',
+      case_id: '',
+      user_id: '',
+      password: '',
+      user_type: 'patient',
     },
   });
 
@@ -46,13 +56,39 @@ export function PatientForm({ onSubmit, uploading }: PatientFormProps) {
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
             <FormField
               control={form.control}
-              name='consultationCode'
+              name='user_type'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Consultation Code</FormLabel>
+                  <FormLabel>User Type</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Select user type' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value='patient'>Patient</SelectItem>
+                      <SelectItem value='doctor'>Doctor</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='user_id'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>User ID</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Enter your consultation code'
+                      placeholder='Enter your user ID'
+                      type='text'
+                      autoComplete='username'
                       {...field}
                     />
                   </FormControl>
@@ -60,7 +96,37 @@ export function PatientForm({ onSubmit, uploading }: PatientFormProps) {
                 </FormItem>
               )}
             />
-
+            <FormField
+              control={form.control}
+              name='password'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='Enter your password'
+                      type='password'
+                      autoComplete='current-password'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='case_id'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Case ID</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Enter your case ID' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <Button type='submit' className='w-full' disabled={uploading}>
               {uploading ? 'Loading...' : 'View Results'}
             </Button>
