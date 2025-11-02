@@ -111,7 +111,7 @@ Structure attendue (respecte exactement ces sections)
 2. **Ce qui va bien ** : liste courte des panels/tests notables dans la norme (ex.: hémogramme globalement normal, fonction rénale dans la norme…).
 3. **Ce qui mérite attention  (priorisé)** :
    - Pour chaque test anormal, une ligne au format :
-     - **Nom du test** — valeur unite (RI: a–b) **↑/↓** — **Priorité : haute/modérée** — courte explication clinique (10–20 mots).
+     - **Nom du test** - valeur unite (RI: a–b) **↑/↓** - **Priorité : haute/modérée** - courte explication clinique (10–20 mots).
 4. **Détails des résultats** (synthèse par panels) :
    - Hématologie : … (reprends valeurs clés avec unités et RI du rapport)
    - Biochimie : …
