@@ -84,6 +84,8 @@ For this project purpose, all services have been exposed to internet, for runnin
 
 The `serverless-functions/` folder contains Python scripts, a `requirements.txt`, and a SQL schema (`cloud-sql-postgres-config-schema.sql`). How to run these depends on your target platform (Cloud Functions, Cloud Run, local testing). Common local steps:
 
+Documentation for Serverless functions / backend services have been provided in  the `serverless-functions` folder.
+
 ## Database
 
 The Postgres schema is provided as `serverless-functions/cloud-sql-postgres-config-schema.sql`.
