@@ -2,7 +2,11 @@
 
 MediScan is a small prototype web application consisting of a React + Vite frontend and a set of serverless function utilities (Python) located in `serverless-functions/`.
 
-This README explains the project layout, services used, prerequisites, and how to run the project both with Docker Compose (recommended for quick start) and locally for development.
+## Disclamer
+This is for EDUCATIONAL Purpose.
+
+Be careful - do not upload or commit sensitive information (personal data, patient health information, credentials, API keys, or other secrets) to this repository or in the application. Treat any real user or patient data with appropriate protections and follow applicable laws and institutional policies when testing with real data.
+**We very strongly recommand to use fake, anonymised and/or non-real data for testing/using the solution.**
 
 ## Repository layout
 
@@ -46,7 +50,7 @@ docker-compose down
 
 If you use the provided helper scripts, `start_server.sh` and `clean_server.sh` are convenience wrappers located at repo root - inspect them to see the exact commands they're running.
 
-## Local frontend development (recommended for UI work)
+## Local frontend development
 
 1. Change to the frontend directory:
 
@@ -72,12 +76,20 @@ The `frontend/package.json` provides these scripts:
 - `build` - builds production assets (runs `tsc -b` then `vite build`)
 - `preview` - previews the production build via `vite preview`
 
-Open the URL printed by Vite (usually http://localhost:5173 by default). If you prefer to run the app in a container to match the compose setup, use the Docker Compose quick start above.
+Open the URL printed by Vite, usually http://localhost:5173 by default. 
 
 ## Serverless functions / backend
+
+For this project purpose, all services have been exposed to internet, for running the project, you just have to run the website part and it'll connect with our backend services.
 
 The `serverless-functions/` folder contains Python scripts, a `requirements.txt`, and a SQL schema (`cloud-sql-postgres-config-schema.sql`). How to run these depends on your target platform (Cloud Functions, Cloud Run, local testing). Common local steps:
 
 ## Database
 
 The Postgres schema is provided as `serverless-functions/cloud-sql-postgres-config-schema.sql`.
+
+## Disclamer
+This is for EDUCATIONAL Purpose.
+
+Be careful - do not upload or commit sensitive information (personal data, patient health information, credentials, API keys, or other secrets) to this repository or through the application. Treat any real user or patient data with appropriate protections and follow applicable laws and institutional policies when testing with real data.
+**We very strongly recommand to use fake, anonymised or non-real data for testing/using the solution.**
